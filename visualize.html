@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Visual History of Large Language Models</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #020617;
+      --bg-alt: #02041a;
+      --fg: #e5e7eb;
+      --muted: #9ca3af;
+      --accent1: #38bdf8;
+      --accent2: #a855f7;
+      --accent3: #f97316;
+      --card-bg: rgba(15, 23, 42, 0.95);
+      --border-subtle: rgba(55, 65, 81, 0.8);
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.7);
+      --shadow-card: 0 18px 40px rgba(15, 23, 42, 0.9);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #020617, #000);
+      color: var(--fg);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 16px 64px;
+    }
+
+    /* ---------- HERO ---------- */
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.5fr);
+      gap: 24px;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .hero-main {
+      padding: 20px 22px;
+      border-radius: var(--radius-lg);
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.12), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(168, 85, 247, 0.18), transparent 60%),
+        linear-gradient(135deg, rgba(15,23,42,0.98), rgba(15,23,42,0.9));
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-badge {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      margin-bottom: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: radial-gradient(circle, #22c55e, #16a34a);
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.8);
+    }
+
+    .hero-title {
+      font-size: clamp(1.9rem, 3vw, 2.4rem);
+      font-weight: 650;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .hero-title span {
+      background: linear-gradient(90deg, #38bdf8, #a855f7, #f97316);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 0.95rem;
+      color: var(--muted);
+      max-width: 36rem;
+      margin-bottom: 14px;
+    }
+
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      font-size: 0.74rem;
+      color: #e5e7eb;
+      background: rgba(15, 23, 42, 0.7);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+    }
+
+    .pill-dot.rnn { background: #38bdf8; }
+    .pill-dot.lstm { background: #22c55e; }
+    .pill-dot.trans { background: #a855f7; }
+    .pill-dot.gpt { background: #f97316; }
+
+    .hero-note {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-top: 4px;
+    }
+
+    .hero-visual {
+      position: relative;
+      border-radius: var(--radius-lg);
+      padding: 18px 16px 16px;
+      background:
+        radial-gradient(circle at top, rgba(248, 250, 252, 0.08), transparent 60%),
+        linear-gradient(145deg, rgba(2,6,23,0.98), rgba(15,23,42,0.98));
+      border: 1px solid rgba(51, 65, 85, 0.9);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .hero-visual-title {
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .hero-visual-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .hero-diagram {
+      position: relative;
+      margin-top: 8px;
+      border-radius: 14px;
+      padding: 10px 10px 12px;
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.94), rgba(15, 23, 42, 0.98));
+      border: 1px solid rgba(30, 64, 175, 0.9);
+      overflow: hidden;
+    }
+
+    .hero-diagram-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(15, 23, 42, 0.85) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 23, 42, 0.85) 1px, transparent 1px);
+      background-size: 18px 18px;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .hero-diagram-inner {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .diagram-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .diagram-node {
+      padding: 6px 8px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #e5e7eb;
+      position: relative;
+    }
+
+    .diagram-node.rnn {
+      background: radial-gradient(circle at top, rgba(56,189,248,0.33), rgba(15,23,42,0.95));
+      border: 1px solid rgba(56, 189, 248, 0.8);
+    }
+
+    .diagram-node.lstm {
+      background: radial-gradient(circle at top, rgba(34,197,94,0.33), rgba(15,23,42,0.95));
+      border: 1px solid rgba(34, 197, 94, 0.8);
+    }
+
+    .diagram-node.trans {
+      background: radial-gradient(circle at top, rgba(168,85,247,0.4), rgba(15,23,42,0.95));
+      border: 1px solid rgba(168, 85, 247, 0.9);
+    }
+
+    .diagram-arrow {
+      font-size: 0.7rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 26px;
+    }
+
+    .diagram-node small {
+      font-size: 0.65rem;
+      opacity: 0.9;
+    }
+
+    /* floating orbs */
+    .orb {
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(1px);
+      opacity: 0.8;
+      mix-blend-mode: screen;
+      animation: float 9s ease-in-out infinite alternate;
+    }
+
+    .orb.one {
+      width: 90px; height: 90px;
+      top: -20px; right: -10px;
+      background: radial-gradient(circle, rgba(56,189,248,0.8), transparent 60%);
+      animation-delay: -2s;
+    }
+    .orb.two {
+      width: 70px; height: 70px;
+      bottom: -12px; left: -10px;
+      background: radial-gradient(circle, rgba(168,85,247,0.7), transparent 60%);
+      animation-delay: -4s;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0); opacity: 0.55; }
+      100% { transform: translateY(-14px) translateX(8px); opacity: 0.9; }
+    }
+
+    /* ---------- TIMELINE LAYOUT ---------- */
+
+    .timeline-wrapper {
+      margin-top: 26px;
+      border-radius: var(--radius-lg);
+      padding: 20px 18px 22px;
+      background:
+        radial-gradient(circle at top left, rgba(15,23,42,0.9), rgba(2,6,23,0.98));
+      border: 1px solid rgba(31, 41, 55, 0.98);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .timeline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+
+    .timeline-title {
+      font-size: 1.05rem;
+      font-weight: 550;
+    }
+
+    .timeline-subtitle {
+      font-size: 0.8rem;
+      color: var(--muted);
+      max-width: 32rem;
+    }
+
+    .timeline {
+      position: relative;
+      margin-top: 10px;
+      padding-left: 10px;
+      border-left: 2px dashed rgba(55, 65, 81, 0.9);
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: -2px;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(
+        180deg,
+        rgba(56,189,248,0.2),
+        rgba(168,85,247,0.4),
+        rgba(249,115,22,0.5)
+      );
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .epoch {
+      position: relative;
+      margin-left: 16px;
+      margin-bottom: 18px;
+      padding-left: 12px;
+    }
+
+    .epoch-marker {
+      position: absolute;
+      left: -31px;
+      top: 10px;
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      border: 2px solid #020617;
+      box-shadow: 0 0 0 3px rgba(31, 41, 55, 0.95);
+      background: radial-gradient(circle at top, #38bdf8, #0ea5e9);
+      z-index: 1;
+    }
+
+    .epoch-year {
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+
+    .epoch-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-card);
+      padding: 10px 11px 10px;
+      position: relative;
+      overflow: hidden;
+      transform-origin: left center;
+      transform: translateX(12px) translateY(6px);
+      opacity: 0;
+      transition: transform 0.45s ease, opacity 0.45s ease,
+                  box-shadow 0.2s ease, border-color 0.2s ease,
+                  background 0.2s ease;
+    }
+
+    .epoch-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(148,163,184,0.1), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      pointer-events: none;
+    }
+
+    .epoch.visible .epoch-card {
+      transform: translateX(0) translateY(0);
+      opacity: 1;
+    }
+
+    .epoch-card:hover {
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.95);
+      border-color: rgba(148, 163, 184, 0.9);
+      background: radial-gradient(circle at top, rgba(15,23,42,0.97), rgba(2,6,23,0.98));
+    }
+
+    .epoch-card:hover::before {
+      opacity: 1;
+    }
+
+    .epoch-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 2px;
+    }
+
+    .epoch-name {
+      font-size: 0.95rem;
+      font-weight: 550;
+    }
+
+    .epoch-tag {
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: #e5e7eb;
+      background: rgba(15, 23, 42, 0.8);
+      white-space: nowrap;
+    }
+
+    .epoch-body {
+      font-size: 0.8rem;
+      color: #d1d5db;
+      line-height: 1.4;
+    }
+
+    .epoch-body strong {
+      color: #bfdbfe;
+      font-weight: 500;
+    }
+
+    .epoch-pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 6px 0 4px;
+    }
+
+    .mini-pill {
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      background: rgba(15, 23, 42, 0.9);
+      font-size: 0.7rem;
+      color: #e5e7eb;
+    }
+
+    .epoch-math {
+      margin-top: 6px;
+      padding: 6px 7px;
+      border-radius: 8px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      font-size: 0.75rem;
+      color: #9ca3af;
+    }
+
+    code {
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+        Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.73rem;
+      background: rgba(15, 23, 42, 0.95);
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+
+    .epoch-highlight {
+      color: #fbbf24;
+      font-weight: 500;
+    }
+
+    .footnote {
+      margin-top: 16px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .hero-main {
+        order: 1;
+      }
+      .hero-visual {
+        order: 0;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        padding: 20px 10px 40px;
+      }
+      .epoch-card {
+        padding: 9px 9px 9px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-main">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          INTERACTIVE CONCEPT MAP
+        </div>
+        <h1 class="hero-title">
+          A Visual History of <span>Large Language Models</span>
+        </h1>
+        <p class="hero-subtitle">
+          Scroll through the timeline to see how we went from fragile
+          <strong>RNNs</strong> to modern <strong>Transformers</strong>
+          and <strong>LLMs</strong>. Each stop explains the core
+          architecture idea, the math intuition, and why it was a step
+          toward today’s generative models.
+        </p>
+        <div class="hero-pills">
+          <div class="pill">
+            <span class="pill-dot rnn"></span> RNN → LSTM → GRU
+          </div>
+          <div class="pill">
+            <span class="pill-dot trans"></span> Attention & Transformers
+          </div>
+          <div class="pill">
+            <span class="pill-dot gpt"></span> GPT, BERT & Scaling
+          </div>
+          <div class="pill">
+            🔍 RAG, Pretraining & Fine-tuning
+          </div>
+        </div>
+        <p class="hero-note">
+          Tip: imagine each card as a “patch note” in the history of
+          sequence models — each invention is fixing a concrete pain point
+          from the previous one.
+        </p>
+      </div>
+
+      <div class="hero-visual">
+        <div class="orb one"></div>
+        <div class="orb two"></div>
+        <h2 class="hero-visual-title">From memory-challenged RNNs to LLMs</h2>
+        <p class="hero-visual-sub">
+          This mini diagram shows how architectural ideas evolved:
+          first we tried to remember the past, then we learned to focus,
+          then we scaled.
+        </p>
+        <div class="hero-diagram">
+          <div class="hero-diagram-grid"></div>
+          <div class="hero-diagram-inner">
+            <div class="diagram-col">
+              <div class="diagram-node rnn">
+                RNN
+                <small>h<sub>t</sub> → h<sub>t+1</sub></small>
+              </div>
+              <div class="diagram-node lstm">
+                LSTM / GRU
+                <small>gates to protect memory</small>
+              </div>
+            </div>
+            <div class="diagram-arrow">
+              <span>⟶</span>
+            </div>
+            <div class="diagram-col">
+              <div class="diagram-node trans">
+                Attention
+                <small>look at all tokens at once</small>
+              </div>
+              <div class="diagram-node trans">
+                Transformers & LLMs
+                <small>huge pretraining + fine-tuning</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TIMELINE -->
+    <section class="timeline-wrapper">
+      <div class="timeline-header">
+        <div>
+          <div class="timeline-title">Timeline of Key Ideas</div>
+          <p class="timeline-subtitle">
+            Each epoch answers: <em>“What was broken in the previous
+            generation, and what new idea fixed it?”</em> Read it as a
+            causal story, not just dates.
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline">
+        <!-- 1. Early RNNs -->
+        <div class="epoch">
+          <div class="epoch-marker"></div>
+          <div class="epoch-year">1980s – early 1990s</div>
+          <div class="epoch-card">
+            <div class="epoch-header">
+              <div class="epoch-name">Recurrent Neural Networks (RNNs)</div>
+              <div class="epoch-tag">Foundations: sequence modelling</div>
+            </div>
+            <div class="epoch-body">
+              <p>
+                Classic RNNs were the first attempt to give neural networks
+                a <strong>memory of the past</strong>. They process a sequence
+                token by token, carrying a hidden state forward:
+              </p>
+              <div class="epoch-pill-row">
+                <span class="mini-pill">Problem: long-term memory</span>
+                <span class="mini-pill">Sequential (no parallelism)</span>
+                <span class="mini-pill">Birth of sequence models</span>
+              </div>
+              <div class="epoch-math">
+                <p>
+                  <strong>Architecture intuition</strong><br />
+                  At each time step:
+                  <br />
+                  <code>h_t = φ(W_h h_{t-1} + W_x x_t + b)</code><br />
+                  <code>y_t = W_y h_t + c</code>
+                </p>
+                <p style="margin-top:4px;">
+                  Here, <code>h_t</code> is like the network’s “thought”
+                  after seeing the first t tokens. To train, we backpropagate
+                  through all time steps:
+                  <br />
+                  <code>∂L/∂h_t ≈ (∏<sub>k=t+1..T</sub> ∂h_k/∂h_{k-1}) · ∂L/∂h_T</code>
+                </p>
+                <p style="margin-top:4px;">
+                  If the effective derivative is slightly &lt; 1, the product
+                  shrinks (<span class="epoch-highlight">vanishing
+                  gradients</span>). If slightly &gt; 1, it explodes.
+                  This made RNNs very bad at learning long-range
+                  dependencies like “subject–verb” agreement across long
+                  sentences.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. LSTM -->
+        <div class="epoch">
+          <div class="epoch-marker"></div>
+          <div class="epoch-year">1997</div>
+          <div class="epoch-card">
+            <div class="epoch-header">
+              <div class="epoch-name">LSTMs: Long Short-Term Memory</div>
+              <div class="epoch-tag">Fix: gated memory</div>
+            </div>
+            <div class="epoch-body">
+              <p>
+                LSTMs were invented specifically to cure the
+                <strong>vanishing gradient problem</strong>. They add a
+                separate “cell state” that acts like a conveyor belt for
+                information, plus gates that learn when to keep or discard
+                information.
+              </p>
+              <div class="epoch-pill-row">
+                <span class="mini-pill">Cell state c<sub>t</sub></span>
+                <span class="mini-pill">Input / Forget / Output gates</span>
+                <span class="mini-pill">Much longer memory</span>
+              </div>
+              <div class="epoch-math">
+                <p>
+                  <strong>Core equations</strong><br />
+                  <code>f_t = σ(W_f [h_{t-1}, x_t] + b_f)</code> (forget gate)<br />
+                  <code>i_t = σ(W_i [h_{t-1}, x_t] + b_i)</code> (input gate)<br />
+                  <code>g_t = tanh(W_g [h_{t-1}, x_t] + b_g)</code><br />
+                  <code>c_t = f_t ⊙ c_{t-1} + i_t ⊙ g_t</code><br />
+                  <code>o_t = σ(W_o [h_{t-1}, x_t] + b_o)</code><br />
+                  <code>h_t = o_t ⊙ tanh(c_t)</code>
+                </p>
+                <p style="margin-top:4px;">
+                  Notice the <code>c_t</code> update:
+                  <code>c_t = f_t ⊙ c_{t-1} + ...</code><br />
+                  Gradients flow through <code>c_t</code> multiplied by
+                  <code>f_t</code>. If the network learns
+                  <code>f_t ≈ 1</code>, then:
+                  <br />
+                  <code>∂L/∂c_t ≈ ∂L/∂c_{t+1}</code><br />
+                  — information and gradients can persist for hundreds of
+                  steps. This is why LSTMs dominated sequence tasks for
+                  years (translation, speech, etc.).
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. GRU -->
+        <div class="epoch">
+          <div class="epoch-marker"></div>
+          <div class="epoch-year">2014</div>
+          <div class="epoch-card">
+            <div class="epoch-header">
+              <div class="epoch-name">GRUs: Gated Recurrent Units</div>
+              <div class="epoch-tag">Simplified gating</div>
+            </div>
+            <div class="epoch-body">
+              <p>
+                GRUs simplify LSTMs by merging some gates and removing the
+                explicit cell state. They still control information flow
+                with gates, but are cheaper to compute and often perform
+                similarly to LSTMs.
+              </p>
+              <div class="epoch-pill-row">
+                <span class="mini-pill">Reset & update gates</span>
+                <span class="mini-pill">No separate c<sub>t</sub></span>
+                <span class="mini-pill">Popular in practice</span>
+              </div>
+              <div class="epoch-math">
+                <p>
+                  <strong>Core equations</strong><br />
+                  <code>z_t = σ(W_z [h_{t-1}, x_t])</code> (update gate)<br />
+                  <code>r_t = σ(W_r [h_{t-1}, x_t])</code> (reset gate)<br />
+                  <code>ĥ_t = tanh(W_h [r_t ⊙ h_{t-1}, x_t])</code><br />
+                  <code>h_t = (1 - z_t) ⊙ h_{t-1} + z_t ⊙ ĥ_t</code>
+                </p>
+                <p style="margin-top:4px;">
+                  The gradient through time depends on how <code>z_t</code>
+                  mixes old and new information. When tasks need long
+                  memory, GRUs can learn <code>z_t</code> patterns that
+                  keep gradients alive, similar in spirit to LSTMs.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Word embeddings -->
+        <div class="epoch">
+          <div class="epoch-marker"></div>
+          <div class="epoch-year">2013</div>
+          <div class="epoch-card">
+            <div class="epoch-header">
+              <div class="epoch-name">Word2Vec & Distributed Meaning</div>
+              <div class="epoch-tag">Vector embeddings</div>
+            </div>
+            <div class="epoch-body">
+              <p>
+                Around the same time, Word2Vec showed that words could live
+                in a continuous vector space where arithmetic reflects
+                semantics (e.g. king - man + woman ≈ queen). This made
+                <strong>continuous language representation</strong> core to
+                NLP.
+              </p>
+              <div class="epoch-pill-row">
+                <span class="mini-pill">Skip-gram / CBOW</span>
+                <span class="mini-pill">Dense word vectors</span>
+                <span class="mini-pill">Foundation for later LMs</span>
+              </div>
+              <div class="epoch-math">
+                <p>
+                  <strong>Training objective (Skip-gram)</strong><br />
+                  Given center word w<sub>t</sub>, predict context words:
+                  <br />
+                  <code>max ∑<sub>t</sub> ∑<sub>c∈context(t)</sub> log P(w_c | w_t)</code>
+                </p>
+                <p style="margin-top:4px;">
+                  The key insight: text co-occurrence statistics encode
+                  rich structure about meaning. LLMs later generalize this
+                  idea from “word vectors” to “full hidden states that
+                  represent entire sentences and documents”.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Seq2Seq -->
+        <div class="epoch">
+          <div class="epoch-marker"></div>
+          <div class="epoch-year">2014</div>
+          <div class="epoch-card">
+            <div class="epoch-header">
+              <div class="epoch-name">Seq2Seq: Encoder–Decoder RNNs</div>
+              <div class="epoch-tag">From understanding to generation</div>
+            </div>
+            <div class="epoch-body">
+              <p>
+                Seq2Seq models split the job into two parts:
+                an <strong>encoder</strong> RNN that reads the input sequence
+                and compresses it into a vector, and a
+                <strong>decoder</strong> RNN that generates the output
+                sequence (e.g. translation).
+              </p>
+              <div class="epoch-pill-row">
+                <span class="mini-pill">Encoder → fixed vector</span>
+                <span class="mini-pill">Decoder → output tokens</span>
+                <span class="mini-pill">Machine translation breakthrough</span>
+              </div>
+              <div class="epoch-math">
+                <p>
+                  <strong>High-level:</strong><br />
+                  Encoder: <code>h_t^enc = RNN(h_{t-1}^enc, x_t)</code><br />
+                  Final state: <code>z = h_T^enc</code><br />
+                  Decoder: <code>h_t^dec = RNN(h_{t-1}^dec, y_{t-1}, z)</code><br />
+                  Predict: <code>P(y_t | y_{<t}, z)</code>
+                </p>
+                <p style="margin-top:4px;">
+                  Problem: cramming a long sentence into a single vector
+                  <code>z</code> is a severe bottleneck. This motivated the
+                  next big idea: letting the decoder look back at the
+                  <strong>entire encoder sequence</strong>, not just one
+                  vector.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. Attention -->
+        <div class="epoch">
+          <div class="epoch-marker"></div>
+          <div class="epoch-year">2015 – 2016</div>
+          <div class="epoch-card">
+            <div class="epoch-header">
+              <div class="epoch-name">Attention: Learn Where to Look</div>
+              <div class="epoch-tag">Fix: bottlenecked encoder</div>
+            </div>
+            <div class="epoch-body">
+              <p>
+                Attention mechanisms allow the decoder to
+                <strong>attend to different encoder states</strong> at each
+                output step, instead of relying on a single vector. This
+                drastically improved translation, especially for long
+                sentences.
+              </p>
+              <div class="epoch-pill-row">
+                <span class="mini-pill">Soft alignment</span>
+                <span class="mini-pill">Context vectors</span>
+                <span class="mini-pill">No more single-vector bottleneck</span>
+              </div>
+              <div class="epoch-math">
+                <p>
+                  Given encoder states <code>H = {h_1, ..., h_T}</code> and a
+                  decoder state <code>s_t</code>:
+                  <br />
+                  <code>e_{t,i} = score(s_t, h_i)</code><br />
+                  <code>α_{t,i} = softmax(e_{t,i})</code><br />
+                  <code>c_t = ∑_i α_{t,i} h_i</code> (context vector)
+                </p>
+                <p style="margin-top:4px;">
+                  The decoder now uses <code>c_t</code> (a
+                  <span class="epoch-highlight">weighted sum</span> of all
+                  encoder states) to decide the next token. This is the seed
+                  concept that later grows into
+                  <strong>self-attention</strong> in Transformers.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7. Transformers -->
+        <div class="epoch">
+          <div class="epoch-marker"></div>
+          <div class="epoch-year">2017</div>
+          <div class="epoch-card">
+            <div class="epoch-header">
+              <div class="epoch-name">Transformers: “Attention Is All You Need”</div>
+              <div class="epoch-tag">Parallel, scalable architecture</div>
+            </div>
+            <div class="epoch-body">
+              <p>
+                Transformers throw away recurrence entirely and rely only on
+                <strong>self-attention</strong>. Every token can directly
+                attend to every other token. This allows massive
+                <strong>parallelism</strong> and handles long-range
+                dependencies gracefully.
+              </p>
+              <div class="epoch-pill-row">
+                <span class="mini-pill">Self-attention</span>
+                <span class="mini-pill">Multi-head</span>
+                <span class="mini-pill">Positional encoding</span>
+              </div>
+              <div class="epoch-math">
+                <p>
+                  For a sequence of token embeddings, build Queries, Keys,
+                  Values:
+                  <br />
+                  <code>Q = X W_Q, K = X W_K, V = X W_V</code><br />
+                  Self-attention head:
+                  <br />
+                  <code>Attention(Q, K, V) = softmax(QKᵀ / √d_k) V</code>
+                </p>
+                <p style="margin-top:4px;">
+                  <strong>Key intuition:</strong> instead of a single
+                  recurrent path, each token can directly connect to every
+                  other token in <code>O(1)</code> “distance” (one attention
+                  layer). Deep stacks of these layers form powerful
+                  hierarchical representations. This architecture is what
+                  LLMs scale up.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 8. GPT-1 -->
+        <div class="epoch">
+          <div class="epoch-marker"></div>
+          <div class="epoch-year">2018</div>
+          <div class="epoch-card">
+            <div class="epoch-header">
+              <div class="epoch-name">GPT-1: Decoder-only Transformers</div>
+              <div class="epoch-tag">Pretraining + fine-tuning</div>
+            </div>
+            <div class="epoch-body">
+              <p>
+                GPT-1 showed that a <strong>decoder-only Transformer</strong>,
+                trained with a simple objective (predict the next token on
+                lots of text), can be fine-tuned on small labeled datasets
+                to achieve strong performance on many tasks.
+              </p>
+              <div class="epoch-pill-row">
+                <span class="mini-pill">Causal self-attention</span>
+                <span class="mini-pill">Language modelling objective</span>
+                <span class="mini-pill">Transfer via fine-tuning</span>
+              </div>
+              <div class="epoch-math">
+                <p>
+                  <strong>Training objective</strong><br />
+                  Given tokens <code>(x₁, ..., x_T)</code>, train to
+                  maximize:
+                  <br />
+                  <code>∑_t log P(x_t | x_{<t})</code>
+                </p>
+                <p style="margin-top:4px;">
+                  This simple next-token prediction forces the model to
+                  learn grammar, semantics, world knowledge, and reasoning
+                  patterns. GPT-1 is the first clear prototype of what we
+                  now call a <strong>base LLM</strong>.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 9. BERT -->
+        <div class="epoch">
+          <div class="epoch-marker"></div>
+          <div class="epoch-year">2018</div>
+          <div class="epoch-card">
+            <div class="epoch-header">
+              <div class="epoch-name">BERT: Bidirectional Encoders</div>
+              <div class="epoch-tag">Deep understanding, not generation</div>
+            </div>
+            <div class="epoch-body">
+              <p>
+                BERT uses only the <strong>encoder</strong> side of the
+                Transformer and trains with a <strong>masked language
+                model</strong> objective. It’s superb at tasks that need
+                understanding (classification, QA, NER) but not direct
+                generation.
+              </p>
+              <div class="epoch-pill-row">
+                <span class="mini-pill">Encoder-only Transformer</span>
+                <span class="mini-pill">Masked LM pretraining</span>
+                <span class="mini-pill">Fine-tuning for downstream tasks</span>
+              </div>
+              <div class="epoch-math">
+                <p>
+                  <strong>Masked LM objective</strong><br />
+                  Randomly mask ~15% of tokens and train to predict them:
+                  <br />
+                  <code>max ∑ log P(x_masked | x_unmasked)</code>
+                </p>
+                <p style="margin-top:4px;">
+                  The key contrast: GPT-style models are
+                  <span class="epoch-highlight">decoder-only,
+                  left-to-right</span> and great for generation; BERT-style
+                  models are <span class="epoch-highlight">encoder-only,
+                  bidirectional</span> and great for understanding &
+                  embeddings — crucial later for retrieval and RAG.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 10. GPT-2 / GPT-3 -->
+        <div class="epoch">
+          <div class="epoch-marker"></div>
+          <div class="epoch-year">2019 – 2020</div>
+          <div class="epoch-card">
+            <div class="epoch-header">
+              <div class="epoch-name">GPT-2 & GPT-3: Scaling Laws</div>
+              <div class="epoch-tag">Bigger = better (for a while)</div>
+            </div>
+            <div class="epoch-body">
+              <p>
+                GPT-2 and GPT-3 massively scaled up parameters, data, and
+                compute, revealing <strong>scaling laws</strong>: as you
+                increase model size and data in the right proportions,
+                performance improves smoothly — and models start doing
+                zero-shot / few-shot reasoning.
+              </p>
+              <div class="epoch-pill-row">
+                <span class="mini-pill">Hundreds of billions of tokens</span>
+                <span class="mini-pill">Zero-shot generalization</span>
+                <span class="mini-pill">Prompting instead of fine-tuning</span>
+              </div>
+              <div class="epoch-math">
+                <p>
+                  <strong>Scaling law idea</strong><br />
+                  Test loss ~ power-law in model/data/compute:
+                  <br />
+                  <code>L(N, D, C) ≈ A N^α + B D^β + C C^γ</code>
+                </p>
+                <p style="margin-top:4px;">
+                  GPT-3 popularized <strong>in-context learning</strong>:
+                  you give the model a few examples in the prompt, and it
+                  behaves as if it had been fine-tuned. This is a purely
+                  emergent property of large Transformer decoders trained
+                  on next-token prediction.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 11. Instruction tuning & RLHF -->
+        <div class="epoch">
+          <div class="epoch-marker"></div>
+          <div class="epoch-year">2021 – 2022</div>
+          <div class="epoch-card">
+            <div class="epoch-header">
+              <div class="epoch-name">Instruction Tuning & RLHF</div>
+              <div class="epoch-tag">From base LMs to assistants</div>
+            </div>
+            <div class="epoch-body">
+              <p>
+                Base models were powerful but raw, often ignoring
+                instructions or producing unsafe output. Instruction tuning
+                and <strong>RLHF (Reinforcement Learning from Human
+                Feedback)</strong> made models follow human-like instructions
+                and align better with user intent.
+              </p>
+              <div class="epoch-pill-row">
+                <span class="mini-pill">Instruction datasets</span>
+                <span class="mini-pill">Human preference modelling</span>
+                <span class="mini-pill">ChatGPT-style behavior</span>
+              </div>
+              <div class="epoch-math">
+                <p>
+                  <strong>Very high-level RLHF loop</strong><br />
+                  1. Collect human preference pairs (A vs B).<br />
+                  2. Train a reward model <code>R(trajectory)</code>.<br />
+                  3. Fine-tune the LM with RL (e.g. PPO) to maximize
+                  expected reward.
+                </p>
+                <p style="margin-top:4px;">
+                  Conceptually, pretraining gives the model a
+                  <span class="epoch-highlight">world model</span>;
+                  instruction tuning + RLHF reshape it into a
+                  <span class="epoch-highlight">helpful assistant</span>.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 12. Open LLMs & RAG -->
+        <div class="epoch">
+          <div class="epoch-marker"></div>
+          <div class="epoch-year">2023 – onward</div>
+          <div class="epoch-card">
+            <div class="epoch-header">
+              <div class="epoch-name">Open Models, RAG & Tool-use</div>
+              <div class="epoch-tag">LLMs as systems, not just models</div>
+            </div>
+            <div class="epoch-body">
+              <p>
+                With open models (LLaMA-style) and better embeddings,
+                developers started combining LLMs with explicit
+                <strong>retrieval</strong> and <strong>tools</strong>:
+                search engines, code interpreters, databases, etc. This is
+                where RAG (Retrieval-Augmented Generation) becomes central.
+              </p>
+              <div class="epoch-pill-row">
+                <span class="mini-pill">Encoder for retrieval</span>
+                <span class="mini-pill">Decoder for generation</span>
+                <span class="mini-pill">LLMs + external knowledge</span>
+              </div>
+              <div class="epoch-math">
+                <p>
+                  <strong>Simple RAG pipeline</strong><br />
+                  1. Use an encoder (e.g. BERT-like) to embed documents:
+                  <code>e(doc)</code>.<br />
+                  2. Given a query q, compute <code>e(q)</code> and retrieve
+                  nearest docs by vector similarity.<br />
+                  3. Feed retrieved context + query into a decoder-only LLM
+                  to generate an answer.
+                </p>
+                <p style="margin-top:4px;">
+                  Architecturally, this closes the loop: we use
+                  <span class="epoch-highlight">encoder-style models for
+                  retrieval</span> and <span class="epoch-highlight">
+                  decoder-style LLMs for generation</span>, combining the
+                  strengths of both sides of the Transformer family.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="footnote">
+        You can treat this whole page as a mental story:
+        RNNs tried to remember, LSTMs & GRUs learned to protect memory,
+        attention learned to focus, Transformers learned to scale, GPT/BERT
+        learned to pretrain and transfer, and RAG learned to connect LLMs
+        to the outside world.
+      </p>
+    </section>
+  </div>
+
+  <script>
+    // Reveal timeline cards as they enter the viewport
+    const epochs = document.querySelectorAll(".epoch");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      },
+      {
+        threshold: 0.25,
+      }
+    );
+
+    epochs.forEach((ep) => observer.observe(ep));
+  </script>
+</body>
+</html>
